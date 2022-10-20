@@ -27,9 +27,9 @@ return(
   }else{
     return(<View>
       <TextInput style={styles.input}
-      placeholderTextColor='#4251f5'
+      placeholderTextColor='#FF0FFF'
       placeholder='Phone Number'>
-      </TextInput>
+      </TextInput> 
       <Button
       title='Send'
         style={styles.button}
@@ -60,7 +60,7 @@ return(
   },
   button: {
     alignItems: "center",
-    backgroundColor: "#DDDDDD",
+    backgroundColor: "#EB00C7",
     padding: 10
   }    
 })
