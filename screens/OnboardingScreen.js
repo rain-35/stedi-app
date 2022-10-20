@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import { SafeAreaView } from 'react-navigation';
 
@@ -41,10 +41,14 @@ const OnboardingScreen = ({setFirstLaunch}) =>{
         onDone={()=> setFirstLaunch(false)}
         pages={[
             {
-              backgroundColor: '#fff',
+              backgroundColor: '#FB00D8',
               image: <Image   style={{height: '60%', width: '90%', resizeMode:'contain', marginBottom:-200}} source={require('../image/testing.png')} />,
-              title: <Text style={{fontWeight:'bold', textAlign:'center', color:'#A0CE4E', fontSize:19, margin:12,  marginTop: -70}}>Welcome to STEDI  Balance</Text>,
-              subtitle: 'STEDI Balance will now send a text with a code',
+              title: <Text style={{fontWeight:'bold', fontSize: 19, margin:15, textAlign:'center', color:'#A0CE4E', marginTop: -130 }}></Text>,
+              subtitle: (
+                <View>
+                  <Text style={{fontWeight:'bold', textAlign:'center', color:'#EB00C7', fontSize:39, margin:92,  marginTop: -70}}>We gonna keep yo stuff way safer than you do yo fool</Text>
+                </View>
+              ),
             },
             {
                 backgroundColor: '#fff',
