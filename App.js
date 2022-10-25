@@ -1,11 +1,12 @@
 import React, { useEffect, useState, } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage, TextInput, } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage, TextInput, Button} from 'react-native';
 import  Navigation from './components/Navigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OnboardingScreen from './screens/OnboardingScreen';
 import Home from './screens/Home';
 import { NavigationContainer } from '@react-navigation/native';
-import { Button } from 'react-native-paper';
+
+import { color } from 'react-native-reanimated';
 
 
 
@@ -27,14 +28,24 @@ return(
   }else{
     return(<View>
       <TextInput style={styles.input}
-      placeholderTextColor='#FF0FFF'
+      placeholderTextColor='#211F0F'
       placeholder='Phone Number'>
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
       </TextInput> 
       <Button
       title='Send'
         style={styles.button}
-        onPress={()=>{
+        onPress={async()=>{
           console.log('Button was pressed')
+          await fetch('https://dev.stedi.me/twofactorlogin/'+phoneNumber,
+          {
+            method:'POST',
+            headers:{
+              'cpntent-type':'application/text'
+            }
+          }
+          )
         }}
         />
     </View>)
@@ -46,7 +57,8 @@ return(
   container:{
       flex:1, 
       alignItems:'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      backgroundColor: "#F7DC07"
   },
   input: {
     height: 40,
@@ -60,8 +72,9 @@ return(
   },
   button: {
     alignItems: "center",
-    backgroundColor: "#EB00C7",
-    padding: 10
+    backgroundColor: "#211F0F",
+    padding: 10,
+    
   }    
 })
 
