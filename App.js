@@ -1,11 +1,12 @@
 import React, { useEffect, useState, } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, AsyncStorage, TextInput, Button} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, Button, Alert} from 'react-native';
 import  Navigation from './components/Navigation';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OnboardingScreen from './screens/OnboardingScreen';
 import Home from './screens/Home';
 import { NavigationContainer } from '@react-navigation/native';
 import { color } from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppStack = createNativeStackNavigator();
 
@@ -42,14 +43,16 @@ return(
         style={styles.button}
         onPress={async()=>{
           console.log('Button was pressed')
-          await fetch('https://dev.stedi.me/twofactorlogin/'+phoneNumber,
+          const textResponse=await fetch('https://dev.stedi.me/twofactorlogin/'+phoneNumber,
           {
             method:'POST',
             headers:{
               'content-type':'application/text'
             }
-          }
+          },
+          //Alert.alert("testing")
           )
+          console.log("textresponse",textResponse.status)
           setLoggedInState(loggedInStates.CODE_SENT)
         }}
         />
@@ -70,18 +73,26 @@ return(
         style={styles.button}
         onPress={async()=>{
           console.log('login Button was pressed')
-          await fetch('https://dev.stedi.me/twofactorlogin',
-        
-          {
+         const loginResponse=await fetch('https://dev.stedi.me/twofactorlogin', {
             method:'POST',
             headers:{
               'content-type':'application/text'
+            },
+            body:JSON.stringify({
+              phoneNumber: phoneNumber,
+              oneTimePassword: passCode
+            })
+            });
+            if(loginResponse.status == 200){//200 means it worked
+              // const sessionToken=await loginResponse.text();
+              // console.log("session Token",sessionToken)
+              // await AsyncStorage.setItem("sessionToken",sessionToken)
+              setLoggedInState(loggedInStates.LOGGED_IN);
+            }else{
+              setLoggedInState(loggedInStates.NOT_LOGGED_IN);
             }
-            body:
-            
-          }
-          )
-          setLoggedInState(loggedInStates.CODE_SENT)
+           
+          
         }}
         />
   </View>
