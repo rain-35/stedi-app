@@ -23,6 +23,28 @@ const App = () =>{
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [passCode, setPassCode] = React.useState(null);
 
+  useEffect(()=>{
+    const getSessionToken = async()=>{
+      const sessionToken = await AsyncStorage.getItem('sessionToken');
+      console.log('sessionToken', sessionToken);
+      const validateResponse = await fetch('https://dev.stedi.me/validate/'+sessionToken,
+      {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/text'
+        }
+      });
+      if(validateResponse.status==200){
+
+        const userName = await validateResponse.text();
+        await AsyncStorage.setItem('userName', userName);
+        setLoggedInState(loggedInStates.LOGGED_IN);
+      }
+    }
+    getSessionToken();
+  })
+
+
    if (isFirstLaunch == true){
 return(
   <OnboardingScreen setFirstLaunch={setFirstLaunch}/>
@@ -84,11 +106,13 @@ return(
             })
             });
             if(loginResponse.status == 200){//200 means it worked
-              // const sessionToken=await loginResponse.text();
-              // console.log("session Token",sessionToken)
-              // await AsyncStorage.setItem("sessionToken",sessionToken)
+              const sessionToken=await loginResponse.text();
+              console.log("session Token",sessionToken)
+              await AsyncStorage.setItem("sessionToken",sessionToken)//stores token
               setLoggedInState(loggedInStates.LOGGED_IN);
             }else{
+              console.log('response ststus', loginResponse.status);
+              Alert.alert('Invalid','Invalid login information')
               setLoggedInState(loggedInStates.NOT_LOGGED_IN);
             }
            
