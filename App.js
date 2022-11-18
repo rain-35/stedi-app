@@ -40,7 +40,7 @@ const App = () =>{
         await AsyncStorage.setItem('userName', userName);
         setLoggedInState(loggedInStates.LOGGED_IN);
         console.log('userName',userName)
-
+ 
       }
     }
     getSessionToken();
