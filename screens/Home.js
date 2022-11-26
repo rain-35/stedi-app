@@ -22,7 +22,9 @@ const sessionToken = await AsyncStorage.getItem("sessionToken")
 const userName = await AsyncStorage.getItem('userName');
 token.current = sessionToken;
 
-    const scoreResponse = await fetch('https://dev.stedi.me/riskscore/'+userName,{
+
+    const scoreResponse = await fetch('https://dev.stedi.me/riskscore/'+userName,
+    {
     method:'GET',
     headers:{
       'Content-Type': 'application/json',
