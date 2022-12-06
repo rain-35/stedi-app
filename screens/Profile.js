@@ -53,27 +53,28 @@ const Profile = (props) => {
   console.log('Error', error)
       }
     }
+ 
 if(profilePhoto==null){
   const cameraOptions={
     quality:0,
     exif:false
   }
 return (
-<View style={styles.container}>
-<Camera type={CameraType.front} style={styles.camera} ref={cameraRef} onCameraReady={() => { setCameraReady(true)}}>
-<View style={styles.buttonContainer}>
-{cameraReady?<TouchableOpacity style={styles.button} onPress={async () => {
+  <View style={styles.container}>
+    <Camera type={CameraType.front} style={styles.camera} ref={cameraRef} onCameraReady={() => { setCameraReady(true)}}>
+      <View style={styles.buttonContainer}>
+        {cameraReady?<TouchableOpacity style={styles.button} onPress={async () => {
 
-const picture = await cameraRef.current.takePictureAsync(cameraOptions);
-console.log('Picture', picture);
-await AsyncStorage.setItem('profilePhoto', picture.uri);
-setProfilePhoto(picture.uri);
-}}>
-<Text style={styles.text}>Take Picture</Text>
-</TouchableOpacity>: null}
-</View>
-</Camera>
-</View>
+        const picture = await cameraRef.current.takePictureAsync(cameraOptions);
+        console.log('Picture', picture);
+        await AsyncStorage.setItem('profilePhoto', picture.uri);
+        setProfilePhoto(picture.uri);
+        }}>
+        <Text style={styles.text}>Take Picture</Text>
+      </TouchableOpacity>: null}
+      </View>
+    </Camera>
+  </View>
 );
 }else{
   return (
@@ -89,14 +90,25 @@ shadowRadius: 2.62,
 elevation: 4}}>
      <CardContent>
      <Image style={{height: 100, width:100, borderRadius: 75}}
-      source={require('../image/me.jpg')} />
-    <Text style={{marginTop:10,marginBottom:10,fontWeight: 'bold'}}>Sarah Romero</Text>
+      source={{uri:profilePhoto}} />
+    <Text style={{marginTop:10,marginBottom:10,fontWeight: 'bold'}}>
+      {userName}
+    </Text>
 
     <Text style={{marginTop:20,marginBottom:2}}>This Week's progress</Text>
 {/* <BarChart barColor='green' data={data} horizontalData={horizontalData} /> */}
-     <View style={{ marginTop: 50 }}>
-      <Button onPress={myCustomerShare} title="Share" />
+     <View style={{ marginTop: 50}}>
+      <Button onPress={async () => {
+        console.log ('share button pressed'),
+        myCustomerShare
+      }
+      } title="Share"  />
+      <Button onPress={async () => {
+        setProfilePhoto(null);
+      }
+      } title="new picture" />
     </View>
+    
     </CardContent>
     </Card>
  </SafeAreaView>
@@ -112,21 +124,27 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+    marginTop: 100,
+    marginBottom: 100
+
   },
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'transparent',
     margin: 64,
+    
+    
   },
   button: {
     flex: 1,
+    backgroundColor: 'blue',
     alignSelf: 'flex-end',
     alignItems: 'center',
   },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
   },
 });
